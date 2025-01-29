@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "{{ doc('stg_customers_desc') }}"
+    columns:
+      - name: customerid
+        description: "{{ doc('customerid_desc') }}"
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_orderdetails
+    description: transaction data for all the orders placed by customers
+    columns:
+      - name: orderid
+        description: unique id assigned to each order placed by a customer automaticallt
+        tests:
+          - relationships:
+              to: ref('stg_orders')
+              field: orderid
+
+  - name: stg_shipments
+    description: shipment status for each order as received by the customer
+    columns:
+      - name: status
+        description: shipment status based on the current shipment details
+        tests:
+          - accepted_values:
+              values: ['shipped', 'returned', 'ordered', 'replaced']
+
+
+
+              
+
